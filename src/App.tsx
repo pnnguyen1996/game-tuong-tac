@@ -64,6 +64,33 @@ function randomDieValue() {
   return Math.floor(Math.random() * 6) + 1;
 }
 
+function MathExpression({ value }: { value: string }) {
+  const normalized = value.trim().replace(/-/g, "−").replace(/\s+/g, " ");
+  const fractionMatch = normalized.match(/^([−]?)(?:(\d+)\s+)?(\d+)\/(\d+)$/);
+
+  if (fractionMatch) {
+    const [, sign, whole, numerator, denominator] = fractionMatch;
+    return (
+      <span className="math-expression" aria-label={normalized}>
+        {sign && <span className="math-sign">−</span>}
+        {whole && <span className="math-whole">{whole}</span>}
+        <span className="math-fraction" aria-hidden="true">
+          <span className="math-numerator">{numerator}</span>
+          <span className="math-denominator">{denominator}</span>
+        </span>
+      </span>
+    );
+  }
+
+  const lengthClass = normalized.length > 36
+    ? "math-expression--long"
+    : normalized.length > 18
+      ? "math-expression--medium"
+      : "";
+
+  return <span className={`math-expression math-expression--plain ${lengthClass}`}>{normalized}</span>;
+}
+
 function Die({ value }: { value: number | null }) {
   const dots: Record<number, number[]> = {
     1: [4],
@@ -487,7 +514,7 @@ export default function Home() {
                 >
                   <span className="memory-card-inner">
                     <span className="memory-card-front"><span>THẺ</span><b>{index + 1}</b></span>
-                    <span className="memory-card-back">{card.content}</span>
+                    <span className="memory-card-back"><MathExpression value={card.content} /></span>
                   </span>
                 </button>
               );
@@ -524,7 +551,7 @@ export default function Home() {
               <div>
                 <span className="eyebrow"><span className="eyebrow-dot" /> Học liệu tùy chỉnh</span>
                 <h2 id="bank-title">Thư viện cặp kiến thức</h2>
-                <p>Nội dung được tự động lưu trên thiết bị này.</p>
+                <p>Nội dung được tự động lưu. Nhập 3/4 hoặc 2 1/3 để hiển thị phân số chuẩn.</p>
               </div>
               <button className="close-button" onClick={() => setBankOpen(false)} aria-label="Đóng">×</button>
             </header>
@@ -548,7 +575,7 @@ export default function Home() {
               </div>
               <details className="bulk-add">
                 <summary>Thêm nhanh nhiều cặp</summary>
-                <p>Mỗi dòng là một cặp, ngăn cách hai thẻ bằng dấu |</p>
+                <p>Mỗi dòng là một cặp, ngăn cách bằng dấu |. Có thể nhập phân số dạng 3/4 và hỗn số dạng 2 1/3.</p>
                 <textarea className="bulk-textarea" placeholder={"Thẻ A1 | Thẻ B1\nThẻ A2 | Thẻ B2"} value={bulkText} onChange={(event) => setBulkText(event.target.value)} />
                 <button className="small-button" onClick={addBulkPairs}>Thêm các dòng hợp lệ</button>
               </details>

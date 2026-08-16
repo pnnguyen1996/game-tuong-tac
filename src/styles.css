@@ -497,6 +497,37 @@ body { font-family: "Aptos", "Segoe UI", ui-sans-serif, system-ui, sans-serif; }
     linear-gradient(90deg, rgba(8,127,140,.045) 1px, transparent 1px), #fff;
   background-size: 16px 16px;
 }
+.math-expression {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  color: var(--navy);
+  font-family: "Cambria Math", Cambria, "Times New Roman", serif;
+  font-size: clamp(2.45rem, 3.8vw, 4rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.035em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.math-expression--plain { white-space: pre-wrap; }
+.math-expression--medium { font-size: clamp(1.55rem, 2.4vw, 2.45rem); line-height: 1.18; }
+.math-expression--long { font-size: clamp(1rem, 1.65vw, 1.6rem); line-height: 1.22; }
+.math-sign { margin-right: .08em; font-weight: 600; }
+.math-whole { margin-right: .16em; }
+.math-fraction {
+  display: inline-grid;
+  grid-template-rows: 1fr 1fr;
+  min-width: 1.18em;
+  line-height: .88;
+  text-align: center;
+  vertical-align: middle;
+}
+.math-numerator {
+  padding: 0 .12em .08em;
+  border-bottom: .075em solid currentColor;
+}
+.math-denominator { padding: .08em .12em 0; }
 .memory-card--matched .memory-card-back { border-color: var(--cyan); background-color: #ecfffb; }
 .status-bar { border-color: #c6dcdf; border-left: 5px solid var(--blue); background: rgba(255,255,255,.88); }
 .status-icon { background: var(--blue); font-family: "Cambria Math", Cambria, serif; }
@@ -547,6 +578,9 @@ body { font-family: "Aptos", "Segoe UI", ui-sans-serif, system-ui, sans-serif; }
   .hero::after { display: none; }
   .hero-kicker span { padding: 7px 9px; font-size: .65rem; }
   .memory-card-front b { font-size: 3rem; }
+  .math-expression { font-size: clamp(2rem, 10vw, 3rem); }
+  .math-expression--medium { font-size: clamp(1.3rem, 6.5vw, 2rem); }
+  .math-expression--long { font-size: clamp(.9rem, 4.4vw, 1.35rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
