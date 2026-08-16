@@ -17,20 +17,34 @@ type Card = {
 type Screen = "setup" | "dice" | "game" | "result";
 
 const ROUND_SIZE = 5;
-const STORAGE_KEY = "ghep-cap-pair-bank-v1";
+const STORAGE_KEY = "ghep-cap-pair-bank-v2";
+const LEGACY_STORAGE_KEY = "ghep-cap-pair-bank-v1";
 const TITLE_STORAGE_KEY = "ghep-cap-game-title-v1";
 const DEFAULT_GAME_TITLE = "GHÉP CẶP";
-const MATH_SYMBOLS = ["π", "∑", "√", "∞", "Δ", "x²", "∠", "≠", "∫", "φ"];
 
 const DEFAULT_PAIRS: Pair[] = [
-  { id: "mau-01", left: "Nội dung thẻ A1", right: "Nội dung ghép với thẻ A1" },
-  { id: "mau-02", left: "Nội dung thẻ A2", right: "Nội dung ghép với thẻ A2" },
-  { id: "mau-03", left: "Nội dung thẻ A3", right: "Nội dung ghép với thẻ A3" },
-  { id: "mau-04", left: "Nội dung thẻ A4", right: "Nội dung ghép với thẻ A4" },
-  { id: "mau-05", left: "Nội dung thẻ A5", right: "Nội dung ghép với thẻ A5" },
-  { id: "mau-06", left: "Nội dung thẻ A6", right: "Nội dung ghép với thẻ A6" },
-  { id: "mau-07", left: "Nội dung thẻ A7", right: "Nội dung ghép với thẻ A7" },
-  { id: "mau-08", left: "Nội dung thẻ A8", right: "Nội dung ghép với thẻ A8" },
+  // Số thập phân và phân số thập phân tương ứng: 5 cặp dương, 5 cặp âm.
+  { id: "thap-01", left: "0,7", right: "7/10" },
+  { id: "thap-02", left: "1,3", right: "13/10" },
+  { id: "thap-03", left: "2,6", right: "26/10" },
+  { id: "thap-04", left: "4,2", right: "42/10" },
+  { id: "thap-05", left: "8,9", right: "89/10" },
+  { id: "thap-06", left: "−0,4", right: "−4/10" },
+  { id: "thap-07", left: "−1,8", right: "−18/10" },
+  { id: "thap-08", left: "−3,5", right: "−35/10" },
+  { id: "thap-09", left: "−5,7", right: "−57/10" },
+  { id: "thap-10", left: "−9,1", right: "−91/10" },
+  // Hỗn số và phân số tương ứng: 5 cặp dương, 5 cặp âm.
+  { id: "hon-01", left: "1 1/2", right: "3/2" },
+  { id: "hon-02", left: "2 2/3", right: "8/3" },
+  { id: "hon-03", left: "3 1/4", right: "13/4" },
+  { id: "hon-04", left: "4 3/5", right: "23/5" },
+  { id: "hon-05", left: "5 5/6", right: "35/6" },
+  { id: "hon-06", left: "−1 2/5", right: "−7/5" },
+  { id: "hon-07", left: "−2 3/4", right: "−11/4" },
+  { id: "hon-08", left: "−3 4/7", right: "−25/7" },
+  { id: "hon-09", left: "−4 1/3", right: "−13/3" },
+  { id: "hon-10", left: "−5 7/8", right: "−47/8" },
 ];
 
 function shuffle<T>(items: T[]): T[] {
@@ -99,6 +113,17 @@ export default function Home() {
         if (saved) {
           const parsed = JSON.parse(saved) as Pair[];
           if (Array.isArray(parsed) && parsed.length) setPairBank(parsed);
+        } else {
+          const legacySaved = window.localStorage.getItem(LEGACY_STORAGE_KEY);
+          if (legacySaved) {
+            const legacyPairs = JSON.parse(legacySaved) as Pair[];
+            const isUntouchedLegacySample = Array.isArray(legacyPairs)
+              && legacyPairs.length === 8
+              && legacyPairs.every((pair) => pair.id?.startsWith("mau-") && pair.left?.startsWith("Nội dung thẻ A"));
+            if (Array.isArray(legacyPairs) && legacyPairs.length && !isUntouchedLegacySample) {
+              setPairBank(legacyPairs);
+            }
+          }
         }
         const savedTitle = window.localStorage.getItem(TITLE_STORAGE_KEY);
         if (savedTitle?.trim()) setGameTitle(savedTitle);
@@ -461,7 +486,7 @@ export default function Home() {
                   aria-label={isFlipped ? `Thẻ ${index + 1}: ${card.content}` : `Thẻ ${index + 1} đang úp`}
                 >
                   <span className="memory-card-inner">
-                    <span className="memory-card-front"><span>{String(index + 1).padStart(2, "0")}</span><b>{MATH_SYMBOLS[index % MATH_SYMBOLS.length]}</b></span>
+                    <span className="memory-card-front"><span>THẺ</span><b>{index + 1}</b></span>
                     <span className="memory-card-back">{card.content}</span>
                   </span>
                 </button>
