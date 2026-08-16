@@ -20,6 +20,7 @@ const ROUND_SIZE = 5;
 const STORAGE_KEY = "ghep-cap-pair-bank-v1";
 const TITLE_STORAGE_KEY = "ghep-cap-game-title-v1";
 const DEFAULT_GAME_TITLE = "GHÉP CẶP";
+const MATH_SYMBOLS = ["π", "∑", "√", "∞", "Δ", "x²", "∠", "≠", "∫", "φ"];
 
 const DEFAULT_PAIRS: Pair[] = [
   { id: "mau-01", left: "Nội dung thẻ A1", right: "Nội dung ghép với thẻ A1" },
@@ -308,13 +309,25 @@ export default function Home() {
     <main className="app-shell">
       <div className="ambient ambient--one" />
       <div className="ambient ambient--two" />
+      <div className="math-atmosphere" aria-hidden="true">
+        <span className="math-glyph math-glyph--one">f(x)</span>
+        <span className="math-glyph math-glyph--two">a² + b²</span>
+        <span className="math-glyph math-glyph--three">πr²</span>
+        <span className="math-glyph math-glyph--four">∑</span>
+        <span className="math-glyph math-glyph--five">√x</span>
+      </div>
 
       {screen === "setup" && (
         <section className="screen setup-screen">
           <header className="hero">
-            <span className="eyebrow"><span className="eyebrow-dot" /> Trò chơi học tập</span>
+            <span className="eyebrow"><span className="eyebrow-dot" /> Math Match · Phòng học tương tác</span>
             <h1>{displayTitle}</h1>
-            <p>Ghi nhớ vị trí, tìm đúng hai thẻ tương ứng và ghi điểm cho đội của bạn.</p>
+            <p>Quan sát dữ kiện, ghi nhớ vị trí và kết nối chính xác các cặp kiến thức toán học.</p>
+            <div className="hero-kicker" aria-label="Ba năng lực được rèn luyện">
+              <span><b>01</b> Ghi nhớ</span>
+              <span><b>02</b> Suy luận</span>
+              <span><b>03</b> Kết nối</span>
+            </div>
           </header>
 
           <div className="title-editor">
@@ -337,8 +350,8 @@ export default function Home() {
               <div className="section-heading">
                 <span className="step-number">01</span>
                 <div>
-                  <h2>Đặt tên hai đội</h2>
-                  <p>Tên đội sẽ xuất hiện trên bảng điểm.</p>
+                  <h2>Thiết lập nhóm nghiên cứu</h2>
+                  <p>Tên hai đội sẽ xuất hiện trên bảng điểm.</p>
                 </div>
               </div>
               <label>
@@ -359,8 +372,8 @@ export default function Home() {
               <div className="section-heading">
                 <span className="step-number step-number--amber">02</span>
                 <div>
-                  <h2>Ngân hàng thẻ</h2>
-                  <p>Thêm và chỉnh sửa nội dung trước khi chơi.</p>
+                  <h2>Thư viện cặp kiến thức</h2>
+                  <p>Thêm và chỉnh sửa dữ kiện trước khi chơi.</p>
                 </div>
               </div>
               <div className="bank-count">
@@ -372,7 +385,7 @@ export default function Home() {
                 <p>Mỗi trận lấy ngẫu nhiên <strong>5 cặp</strong> và xáo trộn thành 10 thẻ.</p>
               </div>
               <button className="secondary-button" onClick={() => { setBankMessage(""); setBankOpen(true); }}>
-                <span aria-hidden="true">＋</span> Quản lí ngân hàng thẻ
+                <span aria-hidden="true">＋</span> Mở thư viện kiến thức
               </button>
             </div>
           </div>
@@ -390,7 +403,7 @@ export default function Home() {
         <section className="screen dice-screen">
           <button className="back-button" onClick={() => setScreen("setup")}><span aria-hidden="true">←</span> Quay lại</button>
           <header className="compact-hero">
-            <span className="eyebrow"><span className="eyebrow-dot" /> Xác định lượt đi</span>
+            <span className="eyebrow"><span className="eyebrow-dot" /> Phòng thí nghiệm xác suất</span>
             <h1>TUNG XÚC XẮC</h1>
             <p>Mỗi đội tung một lần. Đội có số lớn hơn được chơi trước.</p>
           </header>
@@ -448,7 +461,7 @@ export default function Home() {
                   aria-label={isFlipped ? `Thẻ ${index + 1}: ${card.content}` : `Thẻ ${index + 1} đang úp`}
                 >
                   <span className="memory-card-inner">
-                    <span className="memory-card-front"><span>{String(index + 1).padStart(2, "0")}</span><b>?</b></span>
+                    <span className="memory-card-front"><span>{String(index + 1).padStart(2, "0")}</span><b>{MATH_SYMBOLS[index % MATH_SYMBOLS.length]}</b></span>
                     <span className="memory-card-back">{card.content}</span>
                   </span>
                 </button>
@@ -484,8 +497,8 @@ export default function Home() {
           <section className="bank-modal" role="dialog" aria-modal="true" aria-labelledby="bank-title">
             <header className="bank-modal-header">
               <div>
-                <span className="eyebrow"><span className="eyebrow-dot" /> Kho nội dung</span>
-                <h2 id="bank-title">Ngân hàng thẻ</h2>
+                <span className="eyebrow"><span className="eyebrow-dot" /> Học liệu tùy chỉnh</span>
+                <h2 id="bank-title">Thư viện cặp kiến thức</h2>
                 <p>Nội dung được tự động lưu trên thiết bị này.</p>
               </div>
               <button className="close-button" onClick={() => setBankOpen(false)} aria-label="Đóng">×</button>
