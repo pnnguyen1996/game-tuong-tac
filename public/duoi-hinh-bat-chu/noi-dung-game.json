@@ -1,0 +1,19 @@
+{
+  "puzzles": [
+    { "answer": "CÁ NGỰA", "clue": "🐟 ＋ 🐎", "label": "Cá và ngựa" },
+    { "answer": "HOA HỒNG", "clue": "🌸 ＋ 🩷", "label": "Hoa và màu hồng" },
+    { "answer": "MẶT TRỜI", "clue": "🙂 ＋ ☀️", "label": "Mặt và mặt trời" },
+    { "answer": "BÀN CHÂN", "clue": "🪑 ＋ 🦶", "label": "Bàn và chân" },
+    { "answer": "LÁ THƯ", "clue": "🍃 ＋ ✉️", "label": "Lá và thư" },
+    { "answer": "NHÀ KÍNH", "clue": "🏠 ＋ 👓", "label": "Nhà và kính" },
+    { "answer": "SAO BIỂN", "clue": "⭐ ＋ 🌊", "label": "Sao và biển" },
+    { "answer": "ĐỒNG TIỀN", "clue": "🕰️ ＋ 💵", "label": "Đồng hồ và tiền" },
+    { "answer": "ĐÁ BÓNG", "clue": "🪨 ＋ ⚽", "label": "Đá và bóng" },
+    { "answer": "MẬT ONG", "clue": "🍯 ＋ 🐝", "label": "Mật và ong" },
+    { "answer": "CẦU VỒNG", "clue": "🌉 ＋ 🌈", "label": "Cầu và cầu vồng" },
+    { "answer": "BÚT CHÌ", "clue": "🖊️ ＋ 🔑", "label": "Bút và chìa khóa" },
+    { "answer": "XE ĐẠP", "clue": "🚗 ＋ 👣", "label": "Xe và bước chân" },
+    { "answer": "BÓNG ĐÈN", "clue": "⚽ ＋ 🏮", "label": "Bóng và đèn" },
+    { "answer": "CỬA SỔ", "clue": "🚪 ＋ 📖", "label": "Cửa và sổ" }
+  ]
+}

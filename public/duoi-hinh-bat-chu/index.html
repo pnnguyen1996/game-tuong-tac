@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08152f" />
+    <meta name="description" content="Trò chơi Đuổi hình bắt chữ dành cho hai đội." />
+    <title>Đuổi hình bắt chữ</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #f8fbff;
+        --muted: #a8b4cf;
+        --panel: rgba(10, 25, 57, 0.84);
+        --line: rgba(167, 192, 255, 0.18);
+        --cyan: #61e8ff;
+        --yellow: #ffd95a;
+        --red: #ff6685;
+        --green: #62e6a7;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body { min-height: 100%; }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        font-family: Inter, ui-rounded, "Segoe UI", Arial, sans-serif;
+        background:
+          radial-gradient(circle at 14% 0%, rgba(30, 117, 255, 0.34), transparent 32rem),
+          radial-gradient(circle at 92% 85%, rgba(128, 73, 255, 0.28), transparent 30rem),
+          #071126;
+      }
+
+      button { font: inherit; }
+
+      .app {
+        width: min(1380px, 100%);
+        margin: 0 auto;
+        padding: 20px clamp(14px, 3vw, 38px) 30px;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .round-pill, .icon-button {
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,.065);
+        color: var(--ink);
+        border-radius: 999px;
+        min-height: 42px;
+      }
+
+      .round-pill {
+        justify-self: start;
+        padding: 10px 16px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 0;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: .075em;
+        font-size: clamp(1.45rem, 4vw, 2.45rem);
+        text-shadow: 0 0 28px rgba(97,232,255,.28);
+      }
+
+      .header-actions { justify-self: end; display: flex; gap: 8px; }
+
+      .icon-button {
+        padding: 9px 13px;
+        cursor: pointer;
+        transition: background .18s ease, transform .18s ease;
+      }
+
+      .icon-button:hover { background: rgba(255,255,255,.12); transform: translateY(-1px); }
+
+      .scoreboard {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 12px;
+        align-items: stretch;
+        margin-bottom: 16px;
+      }
+
+      .team {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        min-height: 82px;
+        padding: 13px 18px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: var(--panel);
+        overflow: hidden;
+        transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+      }
+
+      .team::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 5px;
+        background: var(--team-color);
+        opacity: .6;
+      }
+
+      .team.active {
+        border-color: var(--team-color);
+        box-shadow: 0 0 0 2px color-mix(in srgb, var(--team-color) 22%, transparent),
+                    0 10px 30px color-mix(in srgb, var(--team-color) 13%, transparent);
+        transform: translateY(-2px);
+      }
+
+      .team-copy { display: grid; gap: 4px; }
+      .team-turn { color: var(--team-color); font-size: .78rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; opacity: 0; }
+      .team.active .team-turn { opacity: 1; }
+      .team-name { font-size: clamp(1rem, 2.4vw, 1.3rem); font-weight: 850; }
+      .score { font-size: clamp(1.8rem, 4.5vw, 2.8rem); font-weight: 950; color: var(--team-color); line-height: 1; }
+      .versus { align-self: center; color: var(--muted); font-weight: 900; }
+
+      .stage {
+        display: grid;
+        grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+        min-height: 410px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: rgba(5, 15, 36, .72);
+        box-shadow: 0 28px 90px rgba(0,0,0,.26);
+      }
+
+      .clue-panel, .answer-panel { padding: clamp(22px, 4vw, 48px); }
+
+      .clue-panel {
+        position: relative;
+        display: grid;
+        place-items: center;
+        border-right: 1px solid var(--line);
+        background:
+          linear-gradient(135deg, rgba(97,232,255,.13), transparent 42%),
+          rgba(255,255,255,.025);
+      }
+
+      .panel-label {
+        position: absolute;
+        top: 18px;
+        left: 20px;
+        color: var(--muted);
+        font-size: .78rem;
+        font-weight: 900;
+        letter-spacing: .11em;
+        text-transform: uppercase;
+      }
+
+      .picture-card {
+        display: grid;
+        place-items: center;
+        width: min(100%, 470px);
+        min-height: 280px;
+        padding: 26px;
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 30px;
+        background: linear-gradient(145deg, rgba(255,255,255,.98), rgba(231,242,255,.93));
+        box-shadow: inset 0 1px 0 #fff, 0 20px 55px rgba(0,0,0,.25);
+      }
+
+      .emoji-clue {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: clamp(10px, 2vw, 22px);
+        font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif;
+        font-size: clamp(4.3rem, 10vw, 7.5rem);
+        line-height: 1.15;
+        filter: drop-shadow(0 9px 8px rgba(17,30,55,.16));
+      }
+
+      .answer-panel {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+      }
+
+      .word-grid {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 11px 19px;
+        width: 100%;
+        min-height: 120px;
+      }
+
+      .word { display: flex; gap: 6px; }
+
+      .letter-slot {
+        display: grid;
+        place-items: center;
+        width: clamp(35px, 4.1vw, 51px);
+        aspect-ratio: 1;
+        border: 2px solid rgba(168,180,207,.38);
+        border-radius: 10px 10px 5px 5px;
+        background: rgba(255,255,255,.055);
+        color: var(--yellow);
+        font-size: clamp(1.15rem, 2.5vw, 1.7rem);
+        font-weight: 950;
+        text-transform: uppercase;
+        box-shadow: inset 0 -4px 0 rgba(255,255,255,.045);
+      }
+
+      .letter-slot.revealed { border-color: rgba(255,217,90,.68); animation: pop .28s ease; }
+
+      @keyframes pop { 50% { transform: scale(1.12); } }
+
+      .message {
+        min-height: 25px;
+        margin: 0;
+        color: var(--muted);
+        text-align: center;
+        font-weight: 750;
+      }
+      .message.good { color: var(--green); }
+      .message.bad { color: var(--red); }
+
+      .keyboard-wrap { margin-top: 18px; }
+
+      .keyboard {
+        display: grid;
+        grid-template-columns: repeat(13, minmax(40px, 1fr));
+        gap: 8px;
+      }
+
+      .key {
+        min-height: 49px;
+        border: 1px solid rgba(97,232,255,.34);
+        border-radius: 12px;
+        background: linear-gradient(180deg, rgba(33,66,126,.95), rgba(18,42,88,.95));
+        color: #fff;
+        font-size: 1.04rem;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 5px 0 #071126;
+        transition: transform .1s ease, filter .15s ease, opacity .15s ease;
+      }
+
+      .key:hover { filter: brightness(1.2); transform: translateY(-1px); }
+      .key:active { transform: translateY(3px); box-shadow: 0 2px 0 #071126; }
+      .key.used { visibility: hidden; pointer-events: none; }
+
+      .lower-actions { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
+      .action-button {
+        min-height: 44px;
+        padding: 10px 17px;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        background: rgba(255,255,255,.07);
+        color: var(--ink);
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .action-button:hover { background: rgba(255,255,255,.12); }
+
+      dialog {
+        width: min(520px, calc(100% - 28px));
+        border: 1px solid rgba(97,232,255,.26);
+        border-radius: 22px;
+        padding: 26px;
+        background: #0c1b39;
+        color: var(--ink);
+        box-shadow: 0 25px 100px rgba(0,0,0,.55);
+      }
+      dialog::backdrop { background: rgba(2,7,19,.78); backdrop-filter: blur(5px); }
+      dialog h2 { margin: 0 0 14px; }
+      dialog p, dialog li { color: #c5cfe3; line-height: 1.55; }
+      dialog menu { display: flex; justify-content: flex-end; padding: 0; margin: 22px 0 0; }
+
+      .result-score {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 18px 0;
+      }
+      .result-card { padding: 15px; border-radius: 15px; background: rgba(255,255,255,.06); text-align: center; }
+      .result-card strong { display: block; font-size: 2rem; color: var(--yellow); }
+
+      @media (max-width: 900px) {
+        header { grid-template-columns: 1fr auto; }
+        h1 { grid-column: 1 / -1; grid-row: 1; }
+        .round-pill { grid-row: 2; }
+        .header-actions { grid-row: 2; }
+        .stage { grid-template-columns: 1fr; }
+        .clue-panel { border-right: 0; border-bottom: 1px solid var(--line); min-height: 335px; }
+        .answer-panel { min-height: 285px; }
+        .keyboard { grid-template-columns: repeat(9, minmax(36px, 1fr)); }
+      }
+
+      @media (max-width: 560px) {
+        .app { padding-inline: 10px; }
+        .scoreboard { gap: 7px; }
+        .team { padding: 10px 12px; min-height: 72px; }
+        .team-turn { font-size: .62rem; }
+        .versus { font-size: .76rem; }
+        .clue-panel, .answer-panel { padding: 42px 14px 20px; }
+        .picture-card { min-height: 230px; }
+        .keyboard { grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        .key { min-height: 44px; }
+        .icon-button .wide-label { display: none; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header>
+        <div class="round-pill">Câu <span id="roundNumber">1</span>/<span id="totalRounds">10</span></div>
+        <h1>Đuổi hình bắt chữ</h1>
+        <div class="header-actions">
+          <button class="icon-button" id="rulesButton" type="button" aria-label="Xem luật chơi">ⓘ <span class="wide-label">Luật chơi</span></button>
+          <button class="icon-button" id="fullscreenButton" type="button" aria-label="Toàn màn hình">⛶</button>
+        </div>
+      </header>
+
+      <section class="scoreboard" aria-label="Bảng điểm">
+        <article class="team active" id="team0" style="--team-color: var(--cyan)">
+          <div class="team-copy"><span class="team-turn">Đang trả lời</span><span class="team-name">Đội Xanh</span></div>
+          <strong class="score" id="score0">0</strong>
+        </article>
+        <span class="versus">VS</span>
+        <article class="team" id="team1" style="--team-color: var(--yellow)">
+          <div class="team-copy"><span class="team-turn">Đang trả lời</span><span class="team-name">Đội Vàng</span></div>
+          <strong class="score" id="score1">0</strong>
+        </article>
+      </section>
+
+      <section class="stage" aria-label="Câu đố hiện tại">
+        <div class="clue-panel">
+          <span class="panel-label">Hình ảnh gợi ý</span>
+          <div class="picture-card" aria-label="Hình ảnh câu đố">
+            <div class="emoji-clue" id="emojiClue" role="img"></div>
+          </div>
+        </div>
+        <div class="answer-panel">
+          <span class="panel-label">Từ khóa</span>
+          <div class="word-grid" id="wordGrid" aria-label="Các ô chữ của từ khóa"></div>
+          <p class="message" id="message" aria-live="polite">Đội Xanh chọn một chữ cái</p>
+        </div>
+      </section>
+
+      <section class="keyboard-wrap" aria-label="Bảng chữ cái tiếng Anh">
+        <div class="keyboard" id="keyboard"></div>
+      </section>
+
+      <div class="lower-actions">
+        <button class="action-button" id="skipButton" type="button">Bỏ qua câu này</button>
+        <button class="action-button" id="restartButton" type="button">Chơi lại</button>
+      </div>
+    </main>
+
+    <dialog id="rulesDialog">
+      <h2>Luật chơi</h2>
+      <ul>
+        <li>Hai đội lần lượt chọn một chữ cái trên bảng.</li>
+        <li>Mỗi ô chữ được mở đúng giúp đội đang chơi nhận 10 điểm.</li>
+        <li>Nếu chữ cái không có trong từ khóa, đội đó mất lượt.</li>
+        <li>Mọi chữ cái đã chọn đều biến mất khỏi bảng chữ cái.</li>
+      </ul>
+      <menu><button class="action-button" data-close-dialog type="button">Đã hiểu</button></menu>
+    </dialog>
+
+    <dialog id="resultDialog">
+      <h2 id="resultTitle">Kết quả</h2>
+      <p id="resultText"></p>
+      <div class="result-score">
+        <div class="result-card">Đội Xanh<strong id="resultScore0">0</strong></div>
+        <div class="result-card">Đội Vàng<strong id="resultScore1">0</strong></div>
+      </div>
+      <menu><button class="action-button" id="playAgainButton" type="button">Chơi lại từ đầu</button></menu>
+    </dialog>
+
+    <script>
+      const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+      const FALLBACK_PUZZLES = [
+        { answer: "CÁ NGỰA", clue: "🐟 ＋ 🐎", label: "Cá và ngựa" },
+        { answer: "HOA HỒNG", clue: "🌸 ＋ 🩷", label: "Hoa và màu hồng" },
+        { answer: "MẶT TRỜI", clue: "🙂 ＋ ☀️", label: "Mặt và mặt trời" },
+        { answer: "BÀN CHÂN", clue: "🪑 ＋ 🦶", label: "Bàn và chân" },
+        { answer: "LÁ THƯ", clue: "🍃 ＋ ✉️", label: "Lá và thư" },
+        { answer: "NHÀ KÍNH", clue: "🏠 ＋ 👓", label: "Nhà và kính" },
+        { answer: "SAO BIỂN", clue: "⭐ ＋ 🌊", label: "Sao và biển" },
+        { answer: "ĐỒNG TIỀN", clue: "🕰️ ＋ 💵", label: "Đồng hồ và tiền" },
+        { answer: "ĐÁ BÓNG", clue: "🪨 ＋ ⚽", label: "Đá và bóng" },
+        { answer: "MẬT ONG", clue: "🍯 ＋ 🐝", label: "Mật và ong" }
+      ];
+
+      const els = {
+        roundNumber: document.querySelector("#roundNumber"),
+        totalRounds: document.querySelector("#totalRounds"),
+        clue: document.querySelector("#emojiClue"),
+        grid: document.querySelector("#wordGrid"),
+        keyboard: document.querySelector("#keyboard"),
+        message: document.querySelector("#message"),
+        teams: [document.querySelector("#team0"), document.querySelector("#team1")],
+        scores: [document.querySelector("#score0"), document.querySelector("#score1")],
+        rules: document.querySelector("#rulesDialog"),
+        result: document.querySelector("#resultDialog")
+      };
+
+      let puzzles = [];
+      let round = 0;
+      let activeTeam = 0;
+      let scores = [0, 0];
+      let guessed = new Set();
+      let locked = false;
+
+      const normalize = (text) => text
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/Đ/g, "D")
+        .replace(/đ/g, "d")
+        .toUpperCase();
+
+      const shuffle = (items) => {
+        const output = [...items];
+        for (let i = output.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [output[i], output[j]] = [output[j], output[i]];
+        }
+        return output;
+      };
+
+      async function loadPuzzles() {
+        try {
+          const response = await fetch("./noi-dung-game.json", { cache: "no-store" });
+          if (!response.ok) throw new Error("Không tải được ngân hàng câu hỏi");
+          const data = await response.json();
+          return Array.isArray(data.puzzles) && data.puzzles.length ? data.puzzles : FALLBACK_PUZZLES;
+        } catch (error) {
+          return FALLBACK_PUZZLES;
+        }
+      }
+
+      function buildKeyboard() {
+        els.keyboard.replaceChildren(...ALPHABET.map(letter => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "key";
+          button.dataset.letter = letter;
+          button.textContent = letter;
+          button.setAttribute("aria-label", `Chọn chữ ${letter}`);
+          button.addEventListener("click", () => guess(letter));
+          return button;
+        }));
+      }
+
+      function renderRound() {
+        locked = false;
+        guessed = new Set();
+        const puzzle = puzzles[round];
+        const words = puzzle.answer.trim().split(/\s+/);
+        els.roundNumber.textContent = String(round + 1);
+        els.totalRounds.textContent = String(puzzles.length);
+        els.clue.textContent = puzzle.clue;
+        els.clue.setAttribute("aria-label", puzzle.label || "Hình ảnh gợi ý");
+        els.message.className = "message";
+        els.message.textContent = `${teamName(activeTeam)} chọn một chữ cái`;
+
+        els.grid.replaceChildren(...words.map(word => {
+          const group = document.createElement("div");
+          group.className = "word";
+          [...word].forEach((character, index) => {
+            const slot = document.createElement("span");
+            slot.className = "letter-slot";
+            slot.dataset.normalized = normalize(character);
+            slot.dataset.character = character;
+            slot.setAttribute("aria-label", `Chữ thứ ${index + 1}, chưa mở`);
+            group.append(slot);
+          });
+          return group;
+        }));
+
+        document.querySelectorAll(".key").forEach(key => key.classList.remove("used"));
+        updateScoreboard();
+      }
+
+      function teamName(index) { return index === 0 ? "Đội Xanh" : "Đội Vàng"; }
+
+      function updateScoreboard() {
+        els.teams.forEach((team, index) => team.classList.toggle("active", index === activeTeam));
+        els.scores.forEach((score, index) => score.textContent = String(scores[index]));
+      }
+
+      function guess(letter) {
+        if (locked || guessed.has(letter)) return;
+        guessed.add(letter);
+        document.querySelector(`.key[data-letter="${letter}"]`)?.classList.add("used");
+
+        const matches = [...document.querySelectorAll(`.letter-slot[data-normalized="${letter}"]:not(.revealed)`)];
+        if (matches.length) {
+          matches.forEach(slot => {
+            slot.textContent = slot.dataset.character;
+            slot.classList.add("revealed");
+            slot.setAttribute("aria-label", `Đã mở chữ ${slot.dataset.character}`);
+          });
+          const points = matches.length * 10;
+          scores[activeTeam] += points;
+          els.message.className = "message good";
+          els.message.textContent = `Chính xác! +${points} điểm cho ${teamName(activeTeam)}`;
+          updateScoreboard();
+          if (document.querySelectorAll(".letter-slot:not(.revealed)").length === 0) finishRound();
+        } else {
+          const previousTeam = activeTeam;
+          activeTeam = activeTeam === 0 ? 1 : 0;
+          els.message.className = "message bad";
+          els.message.textContent = `${teamName(previousTeam)} mất lượt — đến lượt ${teamName(activeTeam)}`;
+          updateScoreboard();
+        }
+      }
+
+      function revealAnswer() {
+        document.querySelectorAll(".letter-slot:not(.revealed)").forEach(slot => {
+          slot.textContent = slot.dataset.character;
+          slot.classList.add("revealed");
+        });
+      }
+
+      function finishRound(skipped = false) {
+        locked = true;
+        revealAnswer();
+        els.message.className = skipped ? "message bad" : "message good";
+        els.message.textContent = skipped ? "Đã bỏ qua — chuẩn bị câu tiếp theo" : `Hoàn thành! ${teamName(activeTeam)} giữ lượt`;
+        setTimeout(() => {
+          round += 1;
+          if (round < puzzles.length) renderRound();
+          else finishGame();
+        }, 1500);
+      }
+
+      function finishGame() {
+        locked = true;
+        document.querySelector("#resultScore0").textContent = String(scores[0]);
+        document.querySelector("#resultScore1").textContent = String(scores[1]);
+        const title = scores[0] === scores[1] ? "Hai đội hòa nhau!" : `${teamName(scores[0] > scores[1] ? 0 : 1)} chiến thắng!`;
+        document.querySelector("#resultTitle").textContent = title;
+        document.querySelector("#resultText").textContent = `Đã hoàn thành ${puzzles.length} câu đố.`;
+        els.result.showModal();
+      }
+
+      function restart() {
+        round = 0;
+        activeTeam = 0;
+        scores = [0, 0];
+        puzzles = shuffle(puzzles);
+        els.result.close();
+        renderRound();
+      }
+
+      document.querySelector("#rulesButton").addEventListener("click", () => els.rules.showModal());
+      document.querySelector("[data-close-dialog]").addEventListener("click", () => els.rules.close());
+      document.querySelector("#restartButton").addEventListener("click", () => {
+        if (confirm("Bắt đầu lại và xóa toàn bộ điểm?")) restart();
+      });
+      document.querySelector("#playAgainButton").addEventListener("click", restart);
+      document.querySelector("#skipButton").addEventListener("click", () => {
+        if (!locked && confirm("Bỏ qua câu này và hiện đáp án?")) finishRound(true);
+      });
+      document.querySelector("#fullscreenButton").addEventListener("click", async () => {
+        if (!document.fullscreenElement) await document.documentElement.requestFullscreen?.();
+        else await document.exitFullscreen?.();
+      });
+      window.addEventListener("keydown", event => {
+        const letter = event.key.toUpperCase();
+        if (ALPHABET.includes(letter) && !event.ctrlKey && !event.metaKey && !event.altKey) guess(letter);
+      });
+
+      buildKeyboard();
+      loadPuzzles().then(items => {
+        puzzles = shuffle(items).slice(0, 10);
+        renderRound();
+      });
+    </script>
+  </body>
+</html>
