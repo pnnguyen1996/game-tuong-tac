@@ -17,7 +17,7 @@ type Card = {
 
 type Screen = "setup" | "dice" | "game" | "result";
 
-const ROUND_SIZE = 5;
+const ROUND_SIZE = 8;
 const STORAGE_KEY = "ghep-cap-pair-bank-v2";
 const LEGACY_STORAGE_KEY = "ghep-cap-pair-bank-v1";
 const TITLE_STORAGE_KEY = "ghep-cap-game-title-v1";
@@ -134,6 +134,7 @@ export default function Home() {
   const [status, setStatus] = useState("Chọn hai thẻ để tạo thành một cặp.");
   const [activePairs, setActivePairs] = useState<Pair[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const displayTitle = gameTitle.trim() || DEFAULT_GAME_TITLE;
 
   useEffect(() => {
@@ -176,6 +177,12 @@ export default function Home() {
     document.title = displayTitle;
   }, [displayTitle, hydrated]);
 
+  useEffect(() => {
+    const updateFullscreenState = () => setIsFullscreen(Boolean(document.fullscreenElement));
+    document.addEventListener("fullscreenchange", updateFullscreenState);
+    return () => document.removeEventListener("fullscreenchange", updateFullscreenState);
+  }, []);
+
   const validPairCount = useMemo(
     () => pairBank.filter((pair) => pair.left.trim() && pair.right.trim()).length,
     [pairBank],
@@ -211,7 +218,7 @@ export default function Home() {
   function startRound() {
     const validPairs = pairBank.filter((pair) => pair.left.trim() && pair.right.trim());
     if (validPairs.length < ROUND_SIZE) {
-      setBankMessage("Cần ít nhất 5 cặp có đủ nội dung trước khi bắt đầu.");
+      setBankMessage(`Cần ít nhất ${ROUND_SIZE} cặp có đủ nội dung trước khi bắt đầu.`);
       setBankOpen(true);
       return;
     }
@@ -232,6 +239,20 @@ export default function Home() {
     setLocked(false);
     setStatus("Chọn hai thẻ để tạo thành một cặp.");
     setScreen("game");
+  }
+
+  async function toggleFullscreen() {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        setStatus("Trình duyệt này không hỗ trợ chế độ toàn màn hình.");
+      }
+    } catch {
+      setStatus("Không thể mở chế độ toàn màn hình. Hãy thử lại.");
+    }
   }
 
   function chooseCard(card: Card) {
@@ -434,7 +455,7 @@ export default function Home() {
               <button className="primary-button" onClick={openDiceScreen} disabled={!canStart}>
                 Bắt đầu trận đấu <span aria-hidden="true">→</span>
               </button>
-              {!canStart && <p className="warning-text">Cần ít nhất 5 cặp đầy đủ nội dung để chơi.</p>}
+              {!canStart && <p className="warning-text">Cần ít nhất {ROUND_SIZE} cặp đầy đủ nội dung để chơi.</p>}
             </div>
 
             <div className="glass-card bank-summary">
@@ -451,7 +472,7 @@ export default function Home() {
               </div>
               <div className="round-note">
                 <span className="round-note-icon" aria-hidden="true">✦</span>
-                <p>Mỗi trận lấy ngẫu nhiên <strong>5 cặp</strong> và xáo trộn thành 10 thẻ.</p>
+                <p>Mỗi trận lấy ngẫu nhiên <strong>{ROUND_SIZE} cặp</strong> và xáo trộn thành {ROUND_SIZE * 2} thẻ.</p>
               </div>
               <button className="secondary-button" onClick={() => { setBankMessage(""); setBankOpen(true); }}>
                 <span aria-hidden="true">＋</span> Mở thư viện kiến thức
@@ -492,7 +513,7 @@ export default function Home() {
           <div className="dice-result" aria-live="polite">
             {!diceResolved && "Mỗi đội hãy tung xúc xắc một lần."}
             {diceTie && <><strong>Hai đội hòa!</strong><button className="small-button" onClick={reroll}>Tung lại</button></>}
-            {diceResolved && !diceTie && <><strong>{teams[currentTeam]} được chơi trước!</strong><button className="primary-button primary-button--inline" onClick={startRound}>Chia 10 thẻ</button></>}
+            {diceResolved && !diceTie && <><strong>{teams[currentTeam]} được chơi trước!</strong><button className="primary-button primary-button--inline" onClick={startRound}>Chia {ROUND_SIZE * 2} thẻ</button></>}
           </div>
         </section>
       )}
@@ -504,7 +525,13 @@ export default function Home() {
               <span className="eyebrow"><span className="eyebrow-dot" /> Trận đấu đang diễn ra</span>
               <h1>{displayTitle}</h1>
             </div>
-            <button className="ghost-button" onClick={newMatch}>Kết thúc trận</button>
+            <div className="game-header-actions">
+              <button className="fullscreen-button" onClick={toggleFullscreen} aria-pressed={isFullscreen}>
+                <span aria-hidden="true">{isFullscreen ? "⊡" : "⛶"}</span>
+                {isFullscreen ? "Thoát toàn màn hình" : "Full screen"}
+              </button>
+              <button className="ghost-button" onClick={newMatch}>Kết thúc trận</button>
+            </div>
           </header>
 
           <div className="scoreboard">
@@ -609,11 +636,11 @@ export default function Home() {
                   <button className="delete-button" onClick={() => removePair(pair.id)} aria-label={`Xóa cặp ${index + 1}`}>×</button>
                 </article>
               ))}
-              {!pairBank.length && <div className="empty-bank">Ngân hàng đang trống. Hãy thêm ít nhất 5 cặp.</div>}
+              {!pairBank.length && <div className="empty-bank">Ngân hàng đang trống. Hãy thêm ít nhất {ROUND_SIZE} cặp.</div>}
             </div>
 
             <footer className="bank-footer">
-              <span>Mỗi trận sử dụng 5 cặp ngẫu nhiên.</span>
+              <span>Mỗi trận sử dụng {ROUND_SIZE} cặp ngẫu nhiên.</span>
               <button className="primary-button primary-button--inline" onClick={() => setBankOpen(false)}>Hoàn tất</button>
             </footer>
           </section>

@@ -132,6 +132,10 @@ button:disabled { cursor: not-allowed; }
 .game-screen { justify-content: flex-start; padding-top: 28px; }
 .game-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
 .game-header h1 { font-size: clamp(2.4rem, 5vw, 4.5rem); }
+.game-header-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+.fullscreen-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 15px; color: white; background: var(--navy); border: 1px solid var(--navy); }
+.fullscreen-button:hover { background: #0d4160; transform: translateY(-1px); }
+.fullscreen-button span { font-size: 1.15rem; line-height: 1; }
 .ghost-button { padding: 11px 15px; color: var(--muted); background: rgba(255,255,255,.65); border: 1px solid var(--line); }
 .scoreboard { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 0 16px; }
 .score-team { display: flex; align-items: center; justify-content: space-between; min-height: 66px; padding: 12px 18px; border-radius: 17px; background: rgba(255,255,255,.82); border: 2px solid transparent; box-shadow: 0 10px 28px rgba(16,36,62,.07); }
@@ -143,7 +147,7 @@ button:disabled { cursor: not-allowed; }
 .score-team--2 strong { color: var(--amber); }
 .turn-pill { position: absolute; z-index: 2; left: 50%; top: -14px; transform: translate(-50%,0); display: flex; align-items: center; gap: 5px; padding: 8px 13px; border-radius: 999px; color: var(--ink); background: white; border: 1px solid #dde4ec; box-shadow: 0 7px 18px rgba(16,36,62,.12); font-size: .76rem; }
 .turn-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; }
-.board { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 13px; }
+.board { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 13px; }
 .memory-card { aspect-ratio: 1.15 / 1; padding: 0; border: 0; border-radius: 18px; background: transparent; perspective: 1000px; }
 .memory-card:focus-visible { outline: 4px solid rgba(36,107,253,.35); outline-offset: 3px; }
 .memory-card-inner { position: relative; display: block; width: 100%; height: 100%; transition: transform .52s cubic-bezier(.2,.7,.2,1); transform-style: preserve-3d; }
@@ -215,6 +219,7 @@ textarea { resize: vertical; min-height: 54px; padding: 10px 12px; color: var(--
   .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .memory-card { aspect-ratio: 1.35 / 1; }
   .game-header { align-items: center; }
+  .game-header-actions { flex-direction: column; align-items: stretch; }
   .scoreboard { padding-top: 38px; margin-top: 0; }
   .turn-pill { top: 0; }
   .pair-entry-row { grid-template-columns: 1fr 30px 1fr; }
@@ -224,6 +229,10 @@ textarea { resize: vertical; min-height: 54px; padding: 10px 12px; color: var(--
   .pair-row .link-symbol { grid-column: 1 / 2; grid-row: 2; }
   .pair-row textarea:last-of-type { grid-column: 2 / 3; grid-row: 2; }
   .pair-row .delete-button { grid-column: 3; grid-row: 1 / 3; }
+}
+
+@media (min-width: 821px) and (max-width: 1280px) {
+  .board { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 @media (max-width: 560px) {
@@ -654,28 +663,28 @@ body { font-family: "Aptos", "Segoe UI", ui-sans-serif, system-ui, sans-serif; }
 .game-screen .game-header h1 { font-size: clamp(2.65rem, 3.8vw, 4.25rem); }
 .game-screen .scoreboard { margin: 6px 0 14px; }
 .game-screen .board { gap: clamp(12px, .9vw, 18px); }
-.game-screen .memory-card { aspect-ratio: 1.35 / 1; }
+.game-screen .memory-card { aspect-ratio: 1.2 / 1; }
 .game-screen .memory-card-front,
 .game-screen .memory-card-back { border-radius: 22px; }
 .game-screen .memory-card-back { padding: clamp(16px, 1.2vw, 24px); }
 
 .game-screen .math-expression {
-  font-size: clamp(2.7rem, 3.7vw, 4.5rem);
+  font-size: clamp(2.2rem, 2.8vw, 3.7rem);
   line-height: 1.02;
 }
 
 .game-screen .math-expression--medium {
-  font-size: clamp(1.65rem, 2.15vw, 2.8rem);
+  font-size: clamp(1.35rem, 1.65vw, 2.1rem);
   line-height: 1.18;
 }
 
 .game-screen .math-expression--long {
-  font-size: clamp(1.25rem, 1.55vw, 2rem);
+  font-size: clamp(1.02rem, 1.2vw, 1.55rem);
   line-height: 1.24;
 }
 
 .game-screen .math-expression--xlong {
-  font-size: clamp(1.05rem, 1.25vw, 1.65rem);
+  font-size: clamp(.88rem, 1vw, 1.25rem);
   line-height: 1.26;
 }
 
