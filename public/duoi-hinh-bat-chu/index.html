@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#08152f" />
-    <meta name="description" content="Trò chơi Đuổi hình bắt chữ dành cho hai đội." />
+    <meta name="description" content="A two-team picture-word guessing game." />
     <title>Đuổi hình bắt chữ</title>
     <style>
       :root {
@@ -331,84 +331,84 @@
   <body>
     <main class="app">
       <header>
-        <div class="round-pill">Câu <span id="roundNumber">1</span>/<span id="totalRounds">10</span></div>
+        <div class="round-pill">Round <span id="roundNumber">1</span>/<span id="totalRounds">10</span></div>
         <h1>Đuổi hình bắt chữ</h1>
         <div class="header-actions">
-          <button class="icon-button" id="rulesButton" type="button" aria-label="Xem luật chơi">ⓘ <span class="wide-label">Luật chơi</span></button>
-          <button class="icon-button" id="fullscreenButton" type="button" aria-label="Toàn màn hình">⛶</button>
+          <button class="icon-button" id="rulesButton" type="button" aria-label="View the rules">ⓘ <span class="wide-label">Rules</span></button>
+          <button class="icon-button" id="fullscreenButton" type="button" aria-label="Enter fullscreen">⛶</button>
         </div>
       </header>
 
-      <section class="scoreboard" aria-label="Bảng điểm">
+      <section class="scoreboard" aria-label="Scoreboard">
         <article class="team active" id="team0" style="--team-color: var(--cyan)">
-          <div class="team-copy"><span class="team-turn">Đang trả lời</span><span class="team-name">Đội Xanh</span></div>
+          <div class="team-copy"><span class="team-turn">Your turn</span><span class="team-name">Blue Team</span></div>
           <strong class="score" id="score0">0</strong>
         </article>
         <span class="versus">VS</span>
         <article class="team" id="team1" style="--team-color: var(--yellow)">
-          <div class="team-copy"><span class="team-turn">Đang trả lời</span><span class="team-name">Đội Vàng</span></div>
+          <div class="team-copy"><span class="team-turn">Your turn</span><span class="team-name">Gold Team</span></div>
           <strong class="score" id="score1">0</strong>
         </article>
       </section>
 
-      <section class="stage" aria-label="Câu đố hiện tại">
+      <section class="stage" aria-label="Current puzzle">
         <div class="clue-panel">
-          <span class="panel-label">Hình ảnh gợi ý</span>
-          <div class="picture-card" aria-label="Hình ảnh câu đố">
+          <span class="panel-label">Picture clue</span>
+          <div class="picture-card" aria-label="Puzzle picture">
             <div class="emoji-clue" id="emojiClue" role="img"></div>
           </div>
         </div>
         <div class="answer-panel">
-          <span class="panel-label">Từ khóa</span>
-          <div class="word-grid" id="wordGrid" aria-label="Các ô chữ của từ khóa"></div>
-          <p class="message" id="message" aria-live="polite">Đội Xanh chọn một chữ cái</p>
+          <span class="panel-label">Mystery word</span>
+          <div class="word-grid" id="wordGrid" aria-label="Letter spaces for the mystery word"></div>
+          <p class="message" id="message" aria-live="polite">Blue Team, choose a letter</p>
         </div>
       </section>
 
-      <section class="keyboard-wrap" aria-label="Bảng chữ cái tiếng Anh">
+      <section class="keyboard-wrap" aria-label="English alphabet keyboard">
         <div class="keyboard" id="keyboard"></div>
       </section>
 
       <div class="lower-actions">
-        <button class="action-button" id="skipButton" type="button">Bỏ qua câu này</button>
-        <button class="action-button" id="restartButton" type="button">Chơi lại</button>
+        <button class="action-button" id="skipButton" type="button">Skip puzzle</button>
+        <button class="action-button" id="restartButton" type="button">Restart</button>
       </div>
     </main>
 
     <dialog id="rulesDialog">
-      <h2>Luật chơi</h2>
+      <h2>How to play</h2>
       <ul>
-        <li>Hai đội lần lượt chọn một chữ cái trên bảng.</li>
-        <li>Mỗi ô chữ được mở đúng giúp đội đang chơi nhận 10 điểm.</li>
-        <li>Nếu chữ cái không có trong từ khóa, đội đó mất lượt.</li>
-        <li>Mọi chữ cái đã chọn đều biến mất khỏi bảng chữ cái.</li>
+        <li>Two teams take turns choosing a letter.</li>
+        <li>Each correctly revealed letter space earns 10 points.</li>
+        <li>If the letter is not in the answer, the turn passes to the other team.</li>
+        <li>Every selected letter disappears from the keyboard.</li>
       </ul>
-      <menu><button class="action-button" data-close-dialog type="button">Đã hiểu</button></menu>
+      <menu><button class="action-button" data-close-dialog type="button">Got it</button></menu>
     </dialog>
 
     <dialog id="resultDialog">
-      <h2 id="resultTitle">Kết quả</h2>
+      <h2 id="resultTitle">Final result</h2>
       <p id="resultText"></p>
       <div class="result-score">
-        <div class="result-card">Đội Xanh<strong id="resultScore0">0</strong></div>
-        <div class="result-card">Đội Vàng<strong id="resultScore1">0</strong></div>
+        <div class="result-card">Blue Team<strong id="resultScore0">0</strong></div>
+        <div class="result-card">Gold Team<strong id="resultScore1">0</strong></div>
       </div>
-      <menu><button class="action-button" id="playAgainButton" type="button">Chơi lại từ đầu</button></menu>
+      <menu><button class="action-button" id="playAgainButton" type="button">Play again</button></menu>
     </dialog>
 
     <script>
       const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
       const FALLBACK_PUZZLES = [
-        { answer: "CÁ NGỰA", clue: "🐟 ＋ 🐎", label: "Cá và ngựa" },
-        { answer: "HOA HỒNG", clue: "🌸 ＋ 🩷", label: "Hoa và màu hồng" },
-        { answer: "MẶT TRỜI", clue: "🙂 ＋ ☀️", label: "Mặt và mặt trời" },
-        { answer: "BÀN CHÂN", clue: "🪑 ＋ 🦶", label: "Bàn và chân" },
-        { answer: "LÁ THƯ", clue: "🍃 ＋ ✉️", label: "Lá và thư" },
-        { answer: "NHÀ KÍNH", clue: "🏠 ＋ 👓", label: "Nhà và kính" },
-        { answer: "SAO BIỂN", clue: "⭐ ＋ 🌊", label: "Sao và biển" },
-        { answer: "ĐỒNG TIỀN", clue: "🕰️ ＋ 💵", label: "Đồng hồ và tiền" },
-        { answer: "ĐÁ BÓNG", clue: "🪨 ＋ ⚽", label: "Đá và bóng" },
-        { answer: "MẬT ONG", clue: "🍯 ＋ 🐝", label: "Mật và ong" }
+        { answer: "SPIDER MAN", clue: "🕷️ ＋ 👨", label: "A spider and a man" },
+        { answer: "HARRY POTTER", clue: "⚡ ＋ 👓 ＋ 🪄", label: "A lightning bolt, glasses and a magic wand" },
+        { answer: "WEDNESDAY", clue: "📅 ＋ 3️⃣", label: "A calendar and the third school day" },
+        { answer: "STITCH", clue: "🧵 ＋ 🪡", label: "Thread and a needle" },
+        { answer: "MINECRAFT", clue: "⛏️ ＋ 🧱", label: "A pickaxe and a block" },
+        { answer: "MARIO", clue: "🍄 ＋ 🧢", label: "A mushroom and a red cap" },
+        { answer: "SONIC", clue: "🦔 ＋ 💨", label: "A fast hedgehog" },
+        { answer: "PIKACHU", clue: "⚡ ＋ 🐭", label: "Lightning and a small mouse" },
+        { answer: "TOUCH GRASS", clue: "🖐️ ＋ 🌱", label: "A hand touching grass" },
+        { answer: "SIDE QUEST", clue: "↪️ ＋ 🎮 ＋ 🗺️", label: "A side path in a game adventure" }
       ];
 
       const els = {
@@ -450,7 +450,7 @@
       async function loadPuzzles() {
         try {
           const response = await fetch("./noi-dung-game.json", { cache: "no-store" });
-          if (!response.ok) throw new Error("Không tải được ngân hàng câu hỏi");
+          if (!response.ok) throw new Error("Could not load the puzzle bank");
           const data = await response.json();
           return Array.isArray(data.puzzles) && data.puzzles.length ? data.puzzles : FALLBACK_PUZZLES;
         } catch (error) {
@@ -465,7 +465,7 @@
           button.className = "key";
           button.dataset.letter = letter;
           button.textContent = letter;
-          button.setAttribute("aria-label", `Chọn chữ ${letter}`);
+          button.setAttribute("aria-label", `Choose letter ${letter}`);
           button.addEventListener("click", () => guess(letter));
           return button;
         }));
@@ -479,9 +479,9 @@
         els.roundNumber.textContent = String(round + 1);
         els.totalRounds.textContent = String(puzzles.length);
         els.clue.textContent = puzzle.clue;
-        els.clue.setAttribute("aria-label", puzzle.label || "Hình ảnh gợi ý");
+        els.clue.setAttribute("aria-label", puzzle.label || "Picture clue");
         els.message.className = "message";
-        els.message.textContent = `${teamName(activeTeam)} chọn một chữ cái`;
+        els.message.textContent = `${teamName(activeTeam)}, choose a letter`;
 
         els.grid.replaceChildren(...words.map(word => {
           const group = document.createElement("div");
@@ -491,7 +491,7 @@
             slot.className = "letter-slot";
             slot.dataset.normalized = normalize(character);
             slot.dataset.character = character;
-            slot.setAttribute("aria-label", `Chữ thứ ${index + 1}, chưa mở`);
+            slot.setAttribute("aria-label", `Letter ${index + 1}, hidden`);
             group.append(slot);
           });
           return group;
@@ -501,7 +501,7 @@
         updateScoreboard();
       }
 
-      function teamName(index) { return index === 0 ? "Đội Xanh" : "Đội Vàng"; }
+      function teamName(index) { return index === 0 ? "Blue Team" : "Gold Team"; }
 
       function updateScoreboard() {
         els.teams.forEach((team, index) => team.classList.toggle("active", index === activeTeam));
@@ -518,19 +518,19 @@
           matches.forEach(slot => {
             slot.textContent = slot.dataset.character;
             slot.classList.add("revealed");
-            slot.setAttribute("aria-label", `Đã mở chữ ${slot.dataset.character}`);
+            slot.setAttribute("aria-label", `Revealed letter ${slot.dataset.character}`);
           });
           const points = matches.length * 10;
           scores[activeTeam] += points;
           els.message.className = "message good";
-          els.message.textContent = `Chính xác! +${points} điểm cho ${teamName(activeTeam)}`;
+          els.message.textContent = `Correct! +${points} points for ${teamName(activeTeam)}`;
           updateScoreboard();
           if (document.querySelectorAll(".letter-slot:not(.revealed)").length === 0) finishRound();
         } else {
           const previousTeam = activeTeam;
           activeTeam = activeTeam === 0 ? 1 : 0;
           els.message.className = "message bad";
-          els.message.textContent = `${teamName(previousTeam)} mất lượt — đến lượt ${teamName(activeTeam)}`;
+          els.message.textContent = `No match. ${teamName(activeTeam)} takes the turn`;
           updateScoreboard();
         }
       }
@@ -546,7 +546,7 @@
         locked = true;
         revealAnswer();
         els.message.className = skipped ? "message bad" : "message good";
-        els.message.textContent = skipped ? "Đã bỏ qua — chuẩn bị câu tiếp theo" : `Hoàn thành! ${teamName(activeTeam)} giữ lượt`;
+        els.message.textContent = skipped ? "Puzzle skipped — get ready for the next one" : `Solved! ${teamName(activeTeam)} keeps the turn`;
         setTimeout(() => {
           round += 1;
           if (round < puzzles.length) renderRound();
@@ -558,9 +558,9 @@
         locked = true;
         document.querySelector("#resultScore0").textContent = String(scores[0]);
         document.querySelector("#resultScore1").textContent = String(scores[1]);
-        const title = scores[0] === scores[1] ? "Hai đội hòa nhau!" : `${teamName(scores[0] > scores[1] ? 0 : 1)} chiến thắng!`;
+        const title = scores[0] === scores[1] ? "It is a tie!" : `${teamName(scores[0] > scores[1] ? 0 : 1)} wins!`;
         document.querySelector("#resultTitle").textContent = title;
-        document.querySelector("#resultText").textContent = `Đã hoàn thành ${puzzles.length} câu đố.`;
+        document.querySelector("#resultText").textContent = `You completed all ${puzzles.length} puzzles.`;
         els.result.showModal();
       }
 
@@ -576,11 +576,11 @@
       document.querySelector("#rulesButton").addEventListener("click", () => els.rules.showModal());
       document.querySelector("[data-close-dialog]").addEventListener("click", () => els.rules.close());
       document.querySelector("#restartButton").addEventListener("click", () => {
-        if (confirm("Bắt đầu lại và xóa toàn bộ điểm?")) restart();
+        if (confirm("Restart the game and clear both scores?")) restart();
       });
       document.querySelector("#playAgainButton").addEventListener("click", restart);
       document.querySelector("#skipButton").addEventListener("click", () => {
-        if (!locked && confirm("Bỏ qua câu này và hiện đáp án?")) finishRound(true);
+        if (!locked && confirm("Skip this puzzle and reveal the answer?")) finishRound(true);
       });
       document.querySelector("#fullscreenButton").addEventListener("click", async () => {
         if (!document.fullscreenElement) await document.documentElement.requestFullscreen?.();
