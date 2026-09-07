@@ -12,6 +12,7 @@ type Card = {
   id: string;
   pairId: string;
   content: string;
+  side: "a" | "b";
 };
 
 type Screen = "setup" | "dice" | "game" | "result";
@@ -218,8 +219,8 @@ export default function Home() {
     const selected = shuffle(validPairs).slice(0, ROUND_SIZE);
     const deck = shuffle(
       selected.flatMap((pair) => [
-        { id: `${pair.id}-a`, pairId: pair.id, content: pair.left },
-        { id: `${pair.id}-b`, pairId: pair.id, content: pair.right },
+        { id: `${pair.id}-a`, pairId: pair.id, content: pair.left, side: "a" as const },
+        { id: `${pair.id}-b`, pairId: pair.id, content: pair.right, side: "b" as const },
       ]),
     );
 
@@ -522,11 +523,11 @@ export default function Home() {
               const isMatched = matched.includes(card.id);
               return (
                 <button
-                  className={`memory-card ${isFlipped ? "memory-card--flipped" : ""} ${isMatched ? "memory-card--matched" : ""}`}
+                  className={`memory-card memory-card--side-${card.side} ${isFlipped ? "memory-card--flipped" : ""} ${isMatched ? "memory-card--matched" : ""}`}
                   key={card.id}
                   onClick={() => chooseCard(card)}
                   disabled={isMatched || locked}
-                  aria-label={isFlipped ? `Thẻ ${index + 1}: ${card.content}` : `Thẻ ${index + 1} đang úp`}
+                  aria-label={isFlipped ? `Thẻ ${card.side.toUpperCase()} số ${index + 1}: ${card.content}` : `Thẻ ${index + 1} đang úp`}
                 >
                   <span className="memory-card-inner">
                     <span className="memory-card-front"><span>THẺ</span><b>{index + 1}</b></span>

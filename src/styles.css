@@ -497,6 +497,28 @@ body { font-family: "Aptos", "Segoe UI", ui-sans-serif, system-ui, sans-serif; }
     linear-gradient(90deg, rgba(8,127,140,.045) 1px, transparent 1px), #fff;
   background-size: 16px 16px;
 }
+.memory-card--side-a .memory-card-back {
+  color: #fff;
+  border-color: #334b6d;
+  background:
+    linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px),
+    linear-gradient(145deg, #19365d, #071a33);
+  background-size: 16px 16px, 16px 16px, auto;
+  box-shadow: 0 14px 30px rgba(7,26,51,.28);
+}
+.memory-card--side-a .math-expression { color: #fff; }
+.memory-card--side-b .memory-card-back {
+  color: #123e33;
+  border-color: #91c9ad;
+  background:
+    linear-gradient(rgba(18,92,70,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18,92,70,.045) 1px, transparent 1px),
+    linear-gradient(145deg, #dcf8e7, #b9e9cb);
+  background-size: 16px 16px, 16px 16px, auto;
+  box-shadow: 0 14px 30px rgba(47,132,94,.18);
+}
+.memory-card--side-b .math-expression { color: #123e33; }
 .math-expression {
   display: inline-flex;
   align-items: center;
@@ -528,7 +550,10 @@ body { font-family: "Aptos", "Segoe UI", ui-sans-serif, system-ui, sans-serif; }
   border-bottom: .075em solid currentColor;
 }
 .math-denominator { padding: .08em .12em 0; }
-.memory-card--matched .memory-card-back { border-color: var(--cyan); background-color: #ecfffb; }
+.memory-card--matched .memory-card-back {
+  border-color: #35c8c2;
+  box-shadow: 0 0 0 4px rgba(53,200,194,.22), 0 14px 30px rgba(8,75,91,.20);
+}
 .status-bar { border-color: #c6dcdf; border-left: 5px solid var(--blue); background: rgba(255,255,255,.88); }
 .status-icon { background: var(--blue); font-family: "Cambria Math", Cambria, serif; }
 
