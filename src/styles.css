@@ -799,3 +799,48 @@ body { font-family: "Aptos", "Segoe UI", ui-sans-serif, system-ui, sans-serif; }
 .game-screen--fullscreen .math-expression--xlong {
   font-size: clamp(.84rem, 1.85vh, 1.5rem);
 }
+
+/* Lock the full-screen game surface to the viewport. This prevents inherited
+   flex/grid alignment from collapsing the board to its intrinsic width. */
+.screen.game-screen.game-screen--fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: block;
+  width: auto;
+  max-width: none;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.screen.game-screen.game-screen--fullscreen .scoreboard {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  left: 10px;
+  width: auto;
+  height: 44px;
+  margin: 0;
+}
+
+.screen.game-screen.game-screen--fullscreen .score-team {
+  min-height: 44px;
+  height: 44px;
+}
+
+.screen.game-screen.game-screen--fullscreen .board {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  bottom: 8px;
+  left: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  width: auto;
+  height: auto;
+  margin: 0;
+}
