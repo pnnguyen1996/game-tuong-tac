@@ -1,0 +1,162 @@
+[
+  {
+    "id": "thap-01",
+    "left": "Bốc trúng sít rịt",
+    "right": "Tình cờ gặp đúng một món hoặc tình huống đặc biệt, ngoài dự đoán."
+  },
+  {
+    "id": "thap-02",
+    "left": "Vuýp",
+    "right": "Khen thứ gì đó rất xịn hoặc đặc biệt."
+  },
+  {
+    "id": "thap-03",
+    "left": "Nấu xói",
+    "right": "Cách nói lái của “nói xấu”"
+  },
+  {
+    "id": "thap-04",
+    "left": "Chưa đủ wow",
+    "right": "Chưa đủ đặc biệt hoặc ấn tượng "
+  },
+  {
+    "id": "thap-05",
+    "left": "Đủ wow rồi đó",
+    "right": "Công nhận rằng điều gì đó đã rất ấn tượng hoặc bất ngờ."
+  },
+  {
+    "id": "thap-06",
+    "left": "Hướng nội hết phần đời còn lại",
+    "right": "Quá ngượng hoặc xấu hổ"
+  },
+  {
+    "id": "thap-07",
+    "left": "Mời đoàn mình lên núi giúp em",
+    "right": "Cách nói hài hước khi gặp một tình huống quá quê hoặc khó xử."
+  },
+  {
+    "id": "thap-08",
+    "left": "Tuyệt đối điện ảnh",
+    "right": "Khoảnh khắc rất đẹp, ấn tượng hoặc kịch tính"
+  },
+  {
+    "id": "thap-09",
+    "left": "Về kể không ai tin",
+    "right": "Một sự việc kỳ lạ, bất ngờ đến mức nghe giống như chuyện bịa."
+  },
+  {
+    "id": "thap-10",
+    "left": "Thua Gia Cát Lượng đúng cây quạt",
+    "right": "Khen ai đó cực kỳ thông minh, tính toán hoặc xử lý rất khéo."
+  },
+  {
+    "id": "hon-01",
+    "left": "Giảm sức mạnh con tướng này giúp em",
+    "right": "Cách khen vui một người quá giỏi hoặc nổi bật so với mọi người."
+  },
+  {
+    "id": "hon-02",
+    "left": "Vượt mức pickleball",
+    "right": "Hành động quá lố, quá trớn hoặc vượt khỏi mức bình thường."
+  },
+  {
+    "id": "hon-03",
+    "left": "Kiếp nạn thứ 82",
+    "right": "Một khó khăn mới xuất hiện sau khi đã trải qua rất nhiều rắc rối."
+  },
+  {
+    "id": "hon-04",
+    "left": "Cạn phước",
+    "right": "Gặp chuyện xui xẻo hoặc rơi vào tình huống rất khó đỡ."
+  },
+  {
+    "id": "hon-05",
+    "left": "Thế hệ cợt nhả",
+    "right": "Nhóm người trẻ thường phản ứng với khó khăn bằng sự hài hước."
+  },
+  {
+    "id": "hon-06",
+    "left": "Hệ tư tưởng Capybara",
+    "right": "Thái độ sống bình tĩnh, thư giãn và ít bị tác động bởi xung quanh."
+  },
+  {
+    "id": "hon-07",
+    "left": "Xịt keo",
+    "right": "Sững sờ, đứng hình"
+  },
+  {
+    "id": "hon-08",
+    "left": "10 điểm không có nhưng",
+    "right": "Lời khen rằng một người hoặc sản phẩm gần như hoàn hảo."
+  },
+  {
+    "id": "hon-09",
+    "left": "Over hợp",
+    "right": "Rất phù hợp, vượt xa mức “hợp” thông thường."
+  },
+  {
+    "id": "hon-10",
+    "left": "Flex",
+    "right": "Chủ động khoe thành tích, tài năng"
+  },
+  {
+    "id": "cap-1788748024070-mmsim3",
+    "left": "Check var",
+    "right": "Kiểm tra lại thông tin hoặc bằng chứng"
+  },
+  {
+    "id": "cap-1788748024070-dkrdbj",
+    "left": "Phông bạt",
+    "right": "Khoe những điều không đúng thực tế."
+  },
+  {
+    "id": "cap-1788748024070-pazt1e",
+    "left": "Slay",
+    "right": "Lời khen dành cho màn thể hiện rất xuất sắc và tự tin"
+  },
+  {
+    "id": "cap-1788748024070-wb6cuf",
+    "left": "Manifest",
+    "right": "Tin tưởng, hình dung và hướng tới điều mình muốn"
+  },
+  {
+    "id": "cap-1788748024070-9gicnc",
+    "left": "Lowkey",
+    "right": "Có phần kín đáo hoặc không muốn thể hiện quá rõ"
+  },
+  {
+    "id": "cap-1788748024070-dqik46",
+    "left": "Highkey",
+    "right": "Thể hiện cảm xúc hoặc ý kiến một cách rõ ràng."
+  },
+  {
+    "id": "cap-1788748024070-sg7u0t",
+    "left": "Red flag",
+    "right": "Dấu hiệu cảnh báo người không tốt"
+  },
+  {
+    "id": "cap-1788748024070-2g2p9g",
+    "left": "Green flag",
+    "right": "Dấu hiệu một người đáng tin"
+  },
+  {
+    "id": "cap-1788748024070-qzlzzp",
+    "left": "Plot twist",
+    "right": "Diễn biến đảo ngược bất ngờ, khác dự đoán."
+  },
+  {
+    "id": "cap-1788748024070-2suty3",
+    "left": "FOMO",
+    "right": "Lo mình sẽ bỏ lỡ một sự kiện hoặc trải nghiệm thú vị."
+  },
+  {
+    "id": "cap-1788748315919-4p710b",
+    "left": "Cooked",
+    "right": "Rơi vào tình thế rất khó giải"
+  },
+  {
+    "id": "cap-1788748315919-fauvr9",
+    "left": "Let him cook",
+    "right": "Để ai đó làm và tin tưởng tuyệt đối"
+  }
+]
