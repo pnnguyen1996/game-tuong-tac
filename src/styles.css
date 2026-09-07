@@ -699,3 +699,94 @@ body { font-family: "Aptos", "Segoe UI", ui-sans-serif, system-ui, sans-serif; }
   .game-screen .math-expression--long { font-size: clamp(1rem, 4.2vw, 1.45rem); }
   .game-screen .math-expression--xlong { font-size: clamp(.88rem, 3.6vw, 1.2rem); }
 }
+
+/* Focused 4 × 4 board in browser full-screen mode */
+:fullscreen body { overflow: hidden; }
+
+.game-screen--fullscreen {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  row-gap: clamp(6px, 1vh, 12px);
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  min-height: 100vh;
+  margin: 0;
+  padding: clamp(8px, 1vh, 14px) clamp(10px, 1vw, 18px);
+  overflow: hidden;
+}
+
+.game-screen--fullscreen .game-header,
+.game-screen--fullscreen .turn-pill,
+.game-screen--fullscreen .status-bar,
+.game-screen--fullscreen .score-team strong {
+  display: none;
+}
+
+.game-screen--fullscreen .scoreboard {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 16px);
+  margin: 0;
+  padding: 0;
+}
+
+.game-screen--fullscreen .score-team {
+  min-height: clamp(38px, 5vh, 54px);
+  padding: 6px 16px;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.game-screen--fullscreen .score-team span {
+  max-width: 100%;
+  color: var(--navy);
+  font-size: clamp(1rem, 2.2vh, 1.45rem);
+  text-align: center;
+}
+
+.game-screen--fullscreen .board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: clamp(6px, .8vh, 11px);
+  min-height: 0;
+  height: 100%;
+}
+
+.game-screen--fullscreen .memory-card {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  border-radius: 16px;
+}
+
+.game-screen--fullscreen .memory-card-front,
+.game-screen--fullscreen .memory-card-back {
+  border-radius: 16px;
+}
+
+.game-screen--fullscreen .memory-card-back {
+  padding: clamp(7px, 1vh, 13px);
+}
+
+.game-screen--fullscreen .memory-card-front b {
+  font-size: clamp(2.2rem, 5.5vh, 4.6rem);
+}
+
+.game-screen--fullscreen .math-expression {
+  font-size: clamp(2rem, 4.8vh, 4rem);
+}
+
+.game-screen--fullscreen .math-expression--medium {
+  font-size: clamp(1.35rem, 3.1vh, 2.6rem);
+}
+
+.game-screen--fullscreen .math-expression--long {
+  font-size: clamp(1rem, 2.25vh, 1.85rem);
+}
+
+.game-screen--fullscreen .math-expression--xlong {
+  font-size: clamp(.84rem, 1.85vh, 1.5rem);
+}

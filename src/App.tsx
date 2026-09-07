@@ -519,7 +519,7 @@ export default function Home() {
       )}
 
       {screen === "game" && (
-        <section className="screen game-screen">
+        <section className={`screen game-screen ${isFullscreen ? "game-screen--fullscreen" : ""}`}>
           <header className="game-header">
             <div>
               <span className="eyebrow"><span className="eyebrow-dot" /> Trận đấu đang diễn ra</span>
