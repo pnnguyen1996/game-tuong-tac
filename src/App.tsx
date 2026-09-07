@@ -82,11 +82,13 @@ function MathExpression({ value }: { value: string }) {
     );
   }
 
-  const lengthClass = normalized.length > 36
-    ? "math-expression--long"
-    : normalized.length > 18
-      ? "math-expression--medium"
-      : "";
+  const lengthClass = normalized.length > 86
+    ? "math-expression--xlong"
+    : normalized.length > 56
+      ? "math-expression--long"
+      : normalized.length > 28
+        ? "math-expression--medium"
+        : "";
 
   return <span className={`math-expression math-expression--plain ${lengthClass}`}>{normalized}</span>;
 }
@@ -361,6 +363,20 @@ export default function Home() {
     <main className="app-shell">
       <div className="ambient ambient--one" />
       <div className="ambient ambient--two" />
+      {screen === "game" && (
+        <div className="brand-watermarks" aria-hidden="true">
+          <img
+            className="brand-watermark brand-watermark--wellspring"
+            src="/game-tuong-tac/brands/wellspring-logo.png"
+            alt=""
+          />
+          <img
+            className="brand-watermark brand-watermark--journey"
+            src="/game-tuong-tac/brands/happy-journey-logo.png"
+            alt=""
+          />
+        </div>
+      )}
       <div className="math-atmosphere" aria-hidden="true">
         <span className="math-glyph math-glyph--one">f(x)</span>
         <span className="math-glyph math-glyph--two">a² + b²</span>
