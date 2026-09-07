@@ -145,8 +145,9 @@
 
       .clue-panel {
         position: relative;
-        display: grid;
-        place-items: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border-right: 1px solid var(--line);
         background:
           linear-gradient(135deg, rgba(97,232,255,.13), transparent 42%),
@@ -175,6 +176,38 @@
         background: linear-gradient(145deg, rgba(255,255,255,.98), rgba(231,242,255,.93));
         box-shadow: inset 0 1px 0 #fff, 0 20px 55px rgba(0,0,0,.25);
       }
+
+      .clue-content {
+        display: grid;
+        justify-items: center;
+        gap: 16px;
+        width: 100%;
+      }
+
+      .hint-chip {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 44px;
+        padding: 9px 16px;
+        border: 1px solid rgba(97,232,255,.28);
+        border-radius: 999px;
+        background: rgba(7,17,38,.72);
+        color: var(--cyan);
+        font-size: clamp(.9rem, 1.7vw, 1.05rem);
+        box-shadow: 0 9px 26px rgba(0,0,0,.18);
+      }
+
+      .hint-chip span {
+        color: var(--muted);
+        font-size: .75rem;
+        font-weight: 900;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+      }
+
+      .hint-chip strong { color: var(--ink); }
 
       .emoji-clue {
         display: flex;
@@ -354,8 +387,11 @@
       <section class="stage" aria-label="Current puzzle">
         <div class="clue-panel">
           <span class="panel-label">Picture clue</span>
-          <div class="picture-card" aria-label="Puzzle picture">
-            <div class="emoji-clue" id="emojiClue" role="img"></div>
+          <div class="clue-content">
+            <div class="picture-card" aria-label="Puzzle picture">
+              <div class="emoji-clue" id="emojiClue" role="img"></div>
+            </div>
+            <div class="hint-chip"><span>Hint</span><strong id="textHint"></strong></div>
           </div>
         </div>
         <div class="answer-panel">
@@ -399,22 +435,23 @@
     <script>
       const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
       const FALLBACK_PUZZLES = [
-        { answer: "SPIDER MAN", clue: "🕷️ ＋ 👨", label: "A spider and a man" },
-        { answer: "HARRY POTTER", clue: "⚡ ＋ 👓 ＋ 🪄", label: "A lightning bolt, glasses and a magic wand" },
-        { answer: "WEDNESDAY", clue: "📅 ＋ 3️⃣", label: "A calendar and the third school day" },
-        { answer: "STITCH", clue: "🧵 ＋ 🪡", label: "Thread and a needle" },
-        { answer: "MINECRAFT", clue: "⛏️ ＋ 🧱", label: "A pickaxe and a block" },
-        { answer: "MARIO", clue: "🍄 ＋ 🧢", label: "A mushroom and a red cap" },
-        { answer: "SONIC", clue: "🦔 ＋ 💨", label: "A fast hedgehog" },
-        { answer: "PIKACHU", clue: "⚡ ＋ 🐭", label: "Lightning and a small mouse" },
-        { answer: "TOUCH GRASS", clue: "🖐️ ＋ 🌱", label: "A hand touching grass" },
-        { answer: "SIDE QUEST", clue: "↪️ ＋ 🎮 ＋ 🗺️", label: "A side path in a game adventure" }
+        { answer: "AURA FARMING", clue: "😎 ✨ 📸", hint: "Cool performance", label: "A cool pose being recorded" },
+        { answer: "BRAIN ROT", clue: "🧠 📱 🔁", hint: "Mindless content", label: "A brain, a phone and a repeat symbol" },
+        { answer: "MAIN CHARACTER", clue: "🎬 ⭐ 👤", hint: "Center of attention", label: "A movie, a star and one person" },
+        { answer: "PLOT TWIST", clue: "📖 ↪️ 😲", hint: "Sudden reversal", label: "A story taking a surprising turn" },
+        { answer: "CANON EVENT", clue: "📖 📌 💥", hint: "Defining experience", label: "A marked event in a story" },
+        { answer: "SIDE QUEST", clue: "🎮 ↗️ 🗺️", hint: "Extra mission", label: "A game route away from the main path" },
+        { answer: "TOUCH GRASS", clue: "📱 ➡️ 🌱", hint: "Offline break", label: "Moving from a phone to the outdoors" },
+        { answer: "LET HIM COOK", clue: "👨‍🍳 🔥 ⏳", hint: "Trust the process", label: "A cook being given more time" },
+        { answer: "CHECK VAR", clue: "⚽ 📺 🔍", hint: "Evidence review", label: "A football replay under review" },
+        { answer: "SPIDER MAN", clue: "🏙️ 📸 🕸️", hint: "Queens student", label: "A city, a camera and a web" }
       ];
 
       const els = {
         roundNumber: document.querySelector("#roundNumber"),
         totalRounds: document.querySelector("#totalRounds"),
         clue: document.querySelector("#emojiClue"),
+        hint: document.querySelector("#textHint"),
         grid: document.querySelector("#wordGrid"),
         keyboard: document.querySelector("#keyboard"),
         message: document.querySelector("#message"),
@@ -480,6 +517,7 @@
         els.totalRounds.textContent = String(puzzles.length);
         els.clue.textContent = puzzle.clue;
         els.clue.setAttribute("aria-label", puzzle.label || "Picture clue");
+        els.hint.textContent = puzzle.hint || "Mystery clue";
         els.message.className = "message";
         els.message.textContent = `${teamName(activeTeam)}, choose a letter`;
 
