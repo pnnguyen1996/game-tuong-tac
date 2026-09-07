@@ -364,7 +364,7 @@
   <body>
     <main class="app">
       <header>
-        <div class="round-pill">Round <span id="roundNumber">1</span>/<span id="totalRounds">10</span></div>
+        <div class="round-pill">Round <span id="roundNumber">1</span>/<span id="totalRounds">30</span></div>
         <h1>Đuổi hình bắt chữ</h1>
         <div class="header-actions">
           <button class="icon-button" id="rulesButton" type="button" aria-label="View the rules">ⓘ <span class="wide-label">Rules</span></button>
@@ -631,7 +631,7 @@
 
       buildKeyboard();
       loadPuzzles().then(items => {
-        puzzles = shuffle(items).slice(0, 10);
+        puzzles = shuffle(items);
         renderRound();
       });
     </script>
